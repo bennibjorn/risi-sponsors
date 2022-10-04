@@ -1,7 +1,10 @@
-import * as prismic from '@prismicio/client'
-import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
+import { json } from '@remix-run/node';
+import * as prismic from '@prismicio/client'
+import { Fade } from 'react-slideshow-image';
+import 'react-slideshow-image/dist/styles.css'
 import { Sponsor } from '../models/sponsors.interface'
+
 
 export const loader = async () => {
   const client = prismic.createClient(process.env.CMS_BASE_URL || '')
@@ -27,6 +30,10 @@ export const loader = async () => {
 export default function Index() {
   const sponsors = useLoaderData<Sponsor[]>()
   return (
-    <div>{JSON.stringify(sponsors)}</div>
+    <Fade arrows={false} pauseOnHover={false} >
+      {sponsors.map((sponsor, index) => (
+        <img key={index} src={sponsor.logo.url} />
+      ))}
+    </Fade>
   );
 }
